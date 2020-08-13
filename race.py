@@ -35,7 +35,7 @@ def title_splash():
 	print("|-| |-|  \\ \\-/ /     -     ||=====  ||    |   \\\\====  ||    |  |_| |_|  ||          ||   =======//")
 	print("============================================================================================      ")
 	print("======================================================================================      ")
-	junk = input("                                    Enter any text to start!\n                                     ")
+	junk = input("                                    Press Enter to start!\n                                     ")
 	return
 
 # Danger 
@@ -462,7 +462,7 @@ def degrade_car(c):
 	return degra_ray
 
 def draw_green_light(track):
-	nothing = input("Press Any Key to Start The Race!\n")
+	nothing = input("Press Enter to Start The Race!\n")
 	print("|-----|\n|*****|\n|*****|\n|*****|\n|-----|\n")
 	time.sleep(1)
 	print("|-----|\n|00000|\n|*****|\n|*****|\n|-----|\n")
@@ -471,8 +471,8 @@ def draw_green_light(track):
 	time.sleep(1)
 	print("|-----|\n|00000|\n|00000|\n|00000|\n|-----|\n")
 	time.sleep(1)
-	print("LIGHTS OUT AT "+track['name']+"!!!")
-	time.sleep(1)
+	print("BLAST OFF AT " + track['name']+"!!!!!!!!!!!!!!!")
+	time.sleep(3)
 	return
 
 def make_car(c_fh,c_fp):
@@ -858,10 +858,10 @@ def race(these_cars,track,info):
 
 	# Line Up cars
 	# Hand over cars with highest time to lowest (or in order of being loaded in the case of practice), and use that to slot them in starting on the lowest line
-	s = 0
+	s = len(these_cars)-1
 	for t in these_cars:
 		t['pos'] = s
-		s = s + 1
+		s = s - 1
 		positions.append(t['pos'])
 
 	# Draw race at pole, then start
@@ -911,11 +911,13 @@ def race(these_cars,track,info):
 				podium.append(c)
 				these_cars.remove(c)
 			elif c['wreck'] == 1:
+				c['degra'] = c['degra'] + c['dmg']
 				dnf.append(c)
 				these_cars.remove(c)
 				# Look if there was another car that was wrecked during the move
 				for v in these_cars:
 					if v['wreck'] == 1:
+						c['degra'] = c['degra'] + c['dmg']
 						dnf.append(v)
 						these_cars.remove(v)					
 				# Check for pile ups
@@ -924,6 +926,7 @@ def race(these_cars,track,info):
 						v = danger_roll(v)
 					if v['wreck'] == 1:
 						v['wreck-note'] = "Wrecked in pileup"
+						c['degra'] = c['degra'] + c['dmg']
 						dnf.append(v)
 						these_cars.remove(v)
 			else:
@@ -949,6 +952,7 @@ def race(these_cars,track,info):
 		except:
 			pass
 
+	these_cars = sorted(these_cars, key=itemgetter('time','ball'))
 	print("+----------------------+")
 	print("|      RACE OVER!      |")
 	print("|* * * * * * * * * * * |")
@@ -958,7 +962,7 @@ def race(these_cars,track,info):
 	print("|      RACE OVER!      |")
 	print("+----------------------+")
 
-	junk = input("Enter any text to see the podium\n")
+	junk = input("Press enter to see the podium\n")
 	cs()
 
 	print("Podium:")
@@ -994,7 +998,7 @@ def qualify(these_cars,track):
 		print("TIME:"+str(c['time']))
 	# Sort cars by pole time and set up grid
 
-	these_cars = sorted(these_cars, key=itemgetter('time','ball'),reverse=True)
+	these_cars = sorted(these_cars, key=itemgetter('time','ball'))
 
 	# Show qualifying information:
 	print("+-------------+")
@@ -1054,41 +1058,64 @@ def draw_race(podium,dnf,cars,track,info):
 
 	p = 1
 	# Table Header
-	t = PrettyTable(["Pos","Car","Location","Lap","Fastest Lap","Pitstops","Status"])
+	t = PrettyTable(["Pos","Car","Location","Lap","Fastest Lap","Pitstops","Damage","Fuel","Status"])
 
 	for c in podium:
 		try:
-			t.add_row([p,c['name'],c['pos'],c['lap'],min(c['tel_lap_splits']),len(c['tel_pit_time']),"FINISHED-"+str(c['time'])])
+			t.add_row([p,c['name'],c['pos'],c['lap'],min(c['tel_lap_splits']),len(c['tel_pit_time']),c['dmg'],c['fuel'],"FINISHED-"+str(c['time'])])
 		except:
-			t.add_row([p,c['name'],c['pos'],c['lap'],"NA","NA","FINISHED-"+str(c['time'])])
+			t.add_row([p,c['name'],c['pos'],c['lap'],"NA","NA",c['dmg'],c['fuel'],"FINISHED-"+str(c['time'])])
 		p = p + 1
 
 	for c in cars:
 		if c['pit_flag'] > 0:
 			try:
-				t.add_row([p,c['name'],c['pos'],c['lap'],min(c['tel_lap_splits']),len(c['tel_pit_time']),"In Pit"])
+				t.add_row([p,c['name'],c['pos'],c['lap'],min(c['tel_lap_splits']),len(c['tel_pit_time']),c['dmg'],c['fuel'],"In Pit"])
 			except:
-				t.add_row([p,c['name'],c['pos'],c['lap'],"NA","NA","In Pit"])
+				t.add_row([p,c['name'],c['pos'],c['lap'],"NA","NA",c['dmg'],c['fuel'],"In Pit"])
 		elif c['pit_flag'] == 0:
 			try:
-				t.add_row([p,c['name'],c['pos'],c['lap'],min(c['tel_lap_splits']),len(c['tel_pit_time']),"Racing"])
+				t.add_row([p,c['name'],c['pos'],c['lap'],min(c['tel_lap_splits']),len(c['tel_pit_time']),c['dmg'],c['fuel'],"Racing"])
 			except:
-				t.add_row([p,c['name'],c['pos'],c['lap'],"NA","NA","Racing"])
+				t.add_row([p,c['name'],c['pos'],c['lap'],"NA","NA",c['dmg'],c['fuel'],"Racing"])
 		p = p + 1
 
 	for c in dnf:
 			try:
-				t.add_row(["X",c['name'],c['pos'],c['lap'],min(c['tel_lap_splits']),len(c['tel_pit_time']),c['wreck-note']])
+				t.add_row(["X",c['name'],c['pos'],c['lap'],min(c['tel_lap_splits']),len(c['tel_pit_time']),c['dmg'],c['fuel'],c['wreck-note']])
 			except:
-				t.add_row(["X",c['name'],c['pos'],c['lap'],"NA","NA",c['wreck-note']])
+				t.add_row(["X",c['name'],c['pos'],c['lap'],"NA","NA",c['dmg'],c['fuel'],c['wreck-note']])
 
 	print(t)
 
 	# Eventually, location will become local
 
-	# Figure out car status
-	# Print out the car
-	# Let folks read
+	# Draw Track, 70 per line
+	x = 0
+
+	print("+----------------------------------------------------------------------+")
+	while x < len(track['course']):
+		# Draw the line up to the next 70
+		y = 0
+		line = "|"
+		while y < 70:
+			# If there is a car here, put an "X"
+			# Otherwise, just a space
+			s = " "
+		
+			for c in cars:
+				if c['pos'] == x:
+					s = "X"
+
+			line = line+s
+
+			y = y + 1
+			x = x + 1
+		# Print the line
+		print(line+"|")
+	print("+----------------------------------------------------------------------+")
+
+
 	time.sleep(1)
 
 	return
@@ -1118,9 +1145,9 @@ def setup():
 
 	if r_type == "p":
 		event = "practice"
-
+		tour = input("Tour Folder: ")
 		t_car = input("Load Car 1: ")
-		car_fp = "./cars/"+t_car+".car"
+		car_fp = "./"+tour+"/"+t_car+".car"
 		car_fh = open(car_fp,"r")
 		a_car = make_car(car_fh,car_fp)
 		these_cars.append(a_car)
@@ -1131,7 +1158,7 @@ def setup():
 		if t_car == "na" or t_car == "NA":
 			pass
 		else:
-			car_fp = "./cars/"+t_car+".car"
+			car_fp = "./"+tour+"/"+t_car+".car"
 			car_fh = open(car_fp,"r")
 			a_car = make_car(car_fh,car_fp)
 			these_cars.append(a_car)
@@ -1140,23 +1167,9 @@ def setup():
 	elif r_type == "r":
 		event = "race"
 		t_car = ""
-		while t_car != "q":
-			t_car = input("Load Car in cars\nf-load by tour\nq-start qualifiers:\n")
-			try:
-				if t_car == "q":
-					break
-				if t_car == "f":
-					t_gp = input("Enter Tour Folder: ")
-					these_cars = load_gp(t_gp)
-					break
-				car_fp = "./cars/"+t_car+".car"
-				car_fh = open(car_fp,"r")
-				a_car = make_car(car_fh,car_fp)
-				these_cars.append(a_car)
-				car_fh.close()
-			except:
-				print("Error! - Invalid Entry")
 
+		t_gp = input("Enter Tour Folder: ")
+		these_cars = load_gp(t_gp)
 
 	else:
 		print("Error - Invalid Race Type")
