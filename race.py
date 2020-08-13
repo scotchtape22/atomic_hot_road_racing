@@ -46,7 +46,7 @@ def danger_roll(car):
 	if car['sen'] >= random.randint(1,120):
 		return car
 
-	car['dmg'] = car['dmg']+random.randint(1,20)
+	car['dmg'] = car['dmg']+random.randint(1,10)
 
 	if car['dmg'] > car['fra']:
 		car['wreck'] = 1
@@ -652,7 +652,8 @@ def load_track(t_fh):
 
 	return this_track
 
-def move_car(car,track,mover,positions):
+def move_car(car,track,mover,all_cars):
+	# print(car['name'] + " moving!")
 	# Car takes 1 clock tick
 	car['time'] = car['time'] + 1
 	car['tel_current_lap'] = car['tel_current_lap'] + 1
@@ -666,7 +667,7 @@ def move_car(car,track,mover,positions):
 		if car['pit_flag'] == 1:
 			car = pit(car)
 			car['pit_flag'] = car['pit_flag']+1
-			return car
+			return car, all_cars
 		# Otherwise, wait for daignostics to finish
 		if car['dia'] + ((car['pit_flag']-2)*5) > random.randint(1,100):
 			roll = car['dia'] + (car['pit_flag']*5)
@@ -676,7 +677,7 @@ def move_car(car,track,mover,positions):
 		else:
 			car['pit_flag'] = car['pit_flag'] + 1
 
-		return car
+		return car, all_cars
 
 
 
@@ -744,13 +745,13 @@ def move_car(car,track,mover,positions):
 		car = danger_roll(car)
 		if car['wreck'] == 1:
 			car['wreck-note'] = "Destroyed in meltdown!"
-			return car
+			return car, all_cars
 
 	# If you run out of fuel your done!
 	if car['fuel'] < 0:
 		car['wreck'] = 1
 		car['wreck-note'] = "Out of fuel."
-		return car
+		return car, all_cars
 
 	# Move based on car position
 	while c_speed > 0:
@@ -768,7 +769,7 @@ def move_car(car,track,mover,positions):
 			car['tel_current_lap'] = 0
 			# Stop checking if car finished
 			if car['lap'] >= track['lc']:
-				return car
+				return car, all_cars
 			continue
 		# Then race as normal:
 		if track['course'][car['pos']] == "straight":
@@ -791,7 +792,7 @@ def move_car(car,track,mover,positions):
 				car = danger_roll(car)
 				if car['wreck'] == 1:
 					car['wreck-note'] = "Wrecked on curve"
-				return car
+				return car, all_cars
 		elif track['course'][car['pos']] == "turn":
 			# Check with fins
 			if car['fin']  >= random.randint(1,120):
@@ -808,7 +809,7 @@ def move_car(car,track,mover,positions):
 				car = danger_roll(car)
 				if car['wreck'] == 1:
 					car['wreck-note'] = "Wrecked on turn"
-				return car
+				return car, all_cars
 		elif track['course'][car['pos']] == "pit":
 			if car['pp_fuel'] >= car['fuel'] or car['pp_dam'] <= car['dmg']:
 				if car['pp_fuel'] >= car['fuel']:
@@ -816,7 +817,7 @@ def move_car(car,track,mover,positions):
 				if car['pp_dam'] <= car['dmg']:
 					car["tel_dam_thr"] = car["tel_dam_thr"] + 1
 				car['pit_flag'] = 1
-				return car
+				return car, all_cars
 			else:
 				c_speed = c_speed - 5
 				car['pos'] = car['pos'] + 1				
@@ -827,18 +828,28 @@ def move_car(car,track,mover,positions):
 			print("ERROR! " + track['course'][car['pos']])
 			time.sleep(1)
 		
-		if positions.count(car['pos']) > 0:
-			car = danger_roll(car)
-			car['tel_cutoff'] = car['tel_cutoff']+1
-			if car['wreck'] == 1:
-				car['wreck-note'] = "Wrecked in collision"
-				return car
-
+		# Go through all cars
+		for v in all_cars:
+			# Skip this car
+			if car['name'] == v['name']:
+				continue
+			# Skip Cars behind this one, as lapped cars move to the side
+			if car['lap'] > v['lap']:
+				continue
+			if car['pos'] == v['pos']:
+				# Danger roll for both cars
+				car = danger_roll(car)
+				v = danger_roll(v)
+				if v['wreck'] == 1:
+					v['wreck-note'] = "Wrecked in collision with "+car['name']
+				if car['wreck'] == 1:
+					car['wreck-note'] = "Wrecked in collision with "+v['name']
+					return car, all_cars
 
 
 	# Return the car with the new position
 
-	return car
+	return car, all_cars
 
 def race(these_cars,track,info):
 	podium = []
@@ -878,7 +889,17 @@ def race(these_cars,track,info):
 			# Save current car position for telemetry
 			start_point = c['pos']
 
-			c = move_car(c,track,mm,positions)
+			c,these_cars = move_car(c,track,mm,these_cars)
+
+
+
+			# Save move speed
+			if c['pos'] < start_point:
+				# Wonky math from the lap over
+				c['tel_moves'].append((len(track['course'])-start_point)+c['pos'])
+			else:
+				c['tel_moves'].append(c['pos']-start_point)
+
 
 
 			if c['lap'] >= track['lc']:
@@ -892,6 +913,11 @@ def race(these_cars,track,info):
 			elif c['wreck'] == 1:
 				dnf.append(c)
 				these_cars.remove(c)
+				# Look if there was another car that was wrecked during the move
+				for v in these_cars:
+					if v['wreck'] == 1:
+						dnf.append(v)
+						these_cars.remove(v)					
 				# Check for pile ups
 				for v in these_cars:
 					if c['pos'] - 5 <= v['pos'] <= c['pos']:
@@ -903,12 +929,7 @@ def race(these_cars,track,info):
 			else:
 				pass
 
-			# Save move speed
-			if c['pos'] < start_point:
-				# Wonky math from the lap over
-				c['tel_moves'].append((len(track['course'])-start_point)+c['pos'])
-			else:
-				c['tel_moves'].append(c['pos']-start_point)
+
 
 			#Refresh positions if the race is continuing
 			if len(these_cars) <= 0:
@@ -973,7 +994,7 @@ def qualify(these_cars,track):
 		print("TIME:"+str(c['time']))
 	# Sort cars by pole time and set up grid
 
-	these_cars = sorted(these_cars, key=itemgetter('time','ball'))
+	these_cars = sorted(these_cars, key=itemgetter('time','ball'),reverse=True)
 
 	# Show qualifying information:
 	print("+-------------+")
