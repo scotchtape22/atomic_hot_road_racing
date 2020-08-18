@@ -7,12 +7,68 @@ from race import save_car
 
 def load_car(fp):
 
-	# Return array of car info
+	# Return dictionary of car info
+	# Generalizing to be used for races too
 
-	c_fh = write(fp,"r")
+	car = {
+	"name":"",
+	"fin_min":0,
+	"fin":0,
+	"fin_max":0,
+	"coo_min":0,
+	"coo":0,
+	"coo_max":0,
+	"ste_min":0,
+	"ste":0,
+	"ste_max":0,
+	"thr_min":0,
+	"thr":0,
+	"thr_max":0,
+	"sen_min":0,
+	"sen":0,
+	"sen_max":0,
+	"fcl_min":0,
+	"fcl":0,
+	"fcl_max":0,
+	"afb_min":0,
+	"afb":0,
+	"afb_max":0,
+	"dia_min":0,
+	"dia":0,
+	"dia_max":0,	
+	"cha":"",
+	"rea":"",
+	"fty":"",
+	"fra":0,
+	"coa":0,
+	"lap":0,
+	"pos":0,
+	"dmg":0,
+	"pts":0,
+	"pp_fuel":0,
+	"pp_dam":0,
+	"degra":0,
+	"fuel":max_fuel(),
+	"wreck":0,
+	"locale":"Starting Grid",
+	"tel_lap_splits":[],
+	"tel_current_lap":0,
+	"tel_pit_time":[],
+	"tel_moves":[],
+	"tel_ebrakes":0,
+	"tel_cutoff":0,
+	"tel_steer":0,
+	"tel_fuel_thr":0,
+	"tel_dam_thr":0,
+	"time":0,
+	"wreck-note":"",
+	"pit_flag":0,
+	"ball":random.randint(1,1000),
+	"file":c_fp
+	}
 
+	c_fh = open(fp,"r")
 
-	c_fh = open
 	for l in c_fh:
 		if l.startswith("#"):
 			continue
@@ -25,21 +81,37 @@ def load_car(fp):
 			elif this_l[1] == "points":
 				car['pts'] = int(this_l[2])
 			elif this_l[1] == "thr":
+				car['thr_min'] = int(this_l[2])
 				car['thr'] = int(this_l[3])
+				car['thr_max'] = int(this_l[4])
 			elif this_l[1] == "fin":
+				car['fin_min'] = int(this_l[2])
 				car['fin'] = int(this_l[3])
+				car['fin_max'] = int(this_l[4])
 			elif this_l[1] == "sen":
+				car['sen_min'] = int(this_l[2])
 				car['sen'] = int(this_l[3])
+				car['sen_max'] = int(this_l[4])
 			elif this_l[1] == "fcl":
+				car['fcl_min'] = int(this_l[2])
 				car['fcl'] = int(this_l[3])
+				car['fcl_max'] = int(this_l[4])
 			elif this_l[1] == "ste":
+				car['ste_min'] = int(this_l[2])
 				car['ste'] = int(this_l[3])
+				car['ste_max'] = int(this_l[4])
 			elif this_l[1] == "coo":
+				car['coo_min'] = int(this_l[2])
 				car['coo'] = int(this_l[3])
+				car['coo_max'] = int(this_l[4])
 			elif this_l[1] == "afb":
+				car['afb_min'] = int(this_l[2])
 				car['afb'] = int(this_l[3])
+				car['afb_max'] = int(this_l[4])
 			elif this_l[1] == "dia":
+				car['dia_min'] = int(this_l[2])
 				car['dia'] = int(this_l[3])
+				car['dia_max'] = int(this_l[4])
 			elif this_l[1] == "rea":
 				car['rea'] = this_l[2].strip("\n")
 			elif this_l[1] == "fty":
@@ -71,6 +143,9 @@ def load_car(fp):
 			car['coa'] = 100
 		else:
 			car['coa'] = 50
+
+
+
 	return car
 
 def new_car():
@@ -213,7 +288,6 @@ def save_car(car_array,c_fh):
 	c_fh.write("#            LAST RACE TELEMETRY           #\n")
 	c_fh.write("############################################\n")
 	# Gather telemetry
-
 
 	c_fh.close()
 
