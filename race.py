@@ -682,10 +682,8 @@ def move_car(car,track,mover,all_cars):
 
 		return car, all_cars
 
-
-
-	# POISION and Spinning go here
-
+	# SPinning goes here
+	
 	# Speed roll, either thrusters or steering based on other driver positions and based on reactor
 	if['rea'] == "fission":
 		if mover == 0:
@@ -701,6 +699,7 @@ def move_car(car,track,mover,all_cars):
 		if c_speed < car['coa']:
 			c_speed = car['coa']
 
+	
 	# Fuel affects afterburners, fuelcell, and coolant efficiency
 	if car['fty'] == "plutonium":
 		# Plutonium is the high risk/high reward fuel, requires both coolant and fcl efficiency
