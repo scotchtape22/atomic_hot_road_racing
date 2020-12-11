@@ -652,6 +652,9 @@ def load_track(t_fh):
 
 	return this_track
 
+def battle(attacker,defender):
+	pass
+
 def move_car(car,track,mover,all_cars):
 	# print(car['name'] + " moving!")
 	# Car takes 1 clock tick
@@ -681,6 +684,7 @@ def move_car(car,track,mover,all_cars):
 
 
 
+	# POISION and Spinning go here
 
 	# Speed roll, either thrusters or steering based on other driver positions and based on reactor
 	if['rea'] == "fission":
@@ -742,6 +746,7 @@ def move_car(car,track,mover,all_cars):
 
 	# If you max out fuel, or go too fast, danger!
 	if car['fuel'] > 50 or c_speed >= 200:
+		# If you ate the nachos, you may warp
 		car = danger_roll(car)
 		if car['wreck'] == 1:
 			car['wreck-note'] = "Destroyed in meltdown!"
