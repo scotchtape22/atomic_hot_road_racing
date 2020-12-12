@@ -987,10 +987,10 @@ def race(these_cars,track,info):
 
 	# Line Up cars
 	# Hand over cars with highest time to lowest (or in order of being loaded in the case of practice), and use that to slot them in starting on the lowest line
-	s = len(these_cars)-1
+	s = 0
 	for t in these_cars:
-		t['pos'] = s
-		s = s - 1
+		t['pos'] = track[len(track)-1]-s
+		s = s + 1
 		positions.append(t['pos'])
 
 	# Draw race at pole, then start
@@ -1173,7 +1173,7 @@ def qualify(these_cars,track):
 	for c in these_cars:
 		c['fuel'] = max_fuel()
 		c['dmg'] = 0
-		c['lap'] = 0
+		c['lap'] = -1
 		c['degra'] = 0
 		c['wreck'] = 0
 		c['time'] = 0
