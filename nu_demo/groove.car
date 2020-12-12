@@ -1,0 +1,57 @@
+# Car Template
+
+############################################
+#  DO NOT EDIT THE BELOW SECTION MANUALLY  #
+#           EDIT USING GARAGE.PY           #
+############################################
+$:name:Groove Crusader
+$:team:remix_racing
+############################################
+#                TOUR INFO                 #
+############################################
+$:points:0
+############################################
+#                 CAR INFO                 #
+############################################
+$:cha:streamlined
+$:rea:fusion
+$:fty:plutonium
+$:thr:8:85:98
+$:ste:13:85:100
+$:coo:8:85:103
+$:fin:10:85:103
+$:sen:10:85:103
+$:fcl:8:85:104
+$:afb:8:85:105
+$:dia:8:85:106
+############################################
+#               STRATEGY INFO              #
+############################################
+$:pp_fuel:10
+$:pp_dam:40
+$:tactic:team
+$:snack:porridge
+############################################
+#            LAST RACE TELEMETRY           #
+############################################
+# Data from last race on: 2020-08-14 08:47:30.566548
+%:Slowest Lap:8
+%:Average Lap:7.0
+%:Fastest Lap:6
+%:All Laps:[7, 8, 6, 6, 8]
+%:Pitstops Taken:2
+%:Slowest Pitstop:3
+%:Average Pitstop:2.5
+%:Fastest Pitstop:2
+%:All Pitstops:[3, 2]
+%:Total Moves:41
+%:Slowest Moves:39
+%:Average Moves:20.48780487804878
+%:Fastest Moves:0
+%:All Moves:[17, 24, 29, 11, 24, 23, 30, 0, 0, 0, 14, 22, 34, 34, 27, 28, 31, 19, 26, 20, 29, 21, 22, 30, 22, 22, 15, 13, 0, 0, 14, 14, 26, 29, 39, 34, 23, 23, 32, 19, 0]
+%:Moves cut short by turning:4
+%:Moves cut short another car:0
+%:Steering vs Thrusters:23/41
+%:Pitstops caused by fuel:0
+%:Pitstops caused by damage:2
+%:Total Part Degragation:146
