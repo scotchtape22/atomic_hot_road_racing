@@ -145,9 +145,17 @@ def car_telementry(car,vm):
 		except:
 			print("Moves cut short by turning: NA")
 		try:
-			print("Moves cut short another car:"+str(car['tel_cutoff']))
+			telemetrics.append("%:Moves cut short another car:"+str(car['tel_failed_overtakes'])+"\n")
 		except:
-			print("Moves cut short another car: NA")
+			telemetrics.append("%:Moves cut short another car: NA\n")
+		try:
+			telemetrics.append("%:Succesful Overtakes:"+str(car['tel_overtakes'])+"\n")
+		except:
+			telemetrics.append("%:Succesful Overtakes: NA\n")
+		try:
+			telemetrics.append("%:Defended from overtakes:"+str(car['tel_defends'])+"\n")
+		except:
+			telemetrics.append("%:Defended from overtakes: NA\n")
 		try:
 			print("Steering vs Thrusters:"+str((car['tel_steer']))+"/"+str(len(car['tel_moves'])))
 		except:
@@ -234,9 +242,17 @@ def car_telementry(car,vm):
 		except:
 			telemetrics.append("%:Moves cut short by turning: NA\n")
 		try:
-			telemetrics.append("%:Moves cut short another car:"+str(car['tel_cutoff'])+"\n")
+			telemetrics.append("%:Moves cut short another car:"+str(car['tel_failed_overtakes'])+"\n")
 		except:
 			telemetrics.append("%:Moves cut short another car: NA\n")
+		try:
+			telemetrics.append("%:Succesful Overtakes:"+str(car['tel_overtakes'])+"\n")
+		except:
+			telemetrics.append("%:Succesful Overtakes: NA\n")
+		try:
+			telemetrics.append("%:Defended from overtakes:"+str(car['tel_defends'])+"\n")
+		except:
+			telemetrics.append("%:Defended from overtakes: NA\n")
 		try:
 			telemetrics.append("%:Steering vs Thrusters:"+str((car['tel_steer']))+"/"+str(len(car['tel_moves']))+"\n")
 		except:
@@ -532,7 +548,9 @@ def make_car(c_fh,c_fp):
 	"tel_pit_time":[],
 	"tel_moves":[],
 	"tel_ebrakes":0,
-	"tel_cutoff":0,
+	"tel_failed_overtakes":0,
+	"tel_overtakes":0,
+	"tel_defends":0,
 	"tel_steer":0,
 	"tel_fuel_thr":0,
 	"tel_dam_thr":0,
@@ -746,19 +764,26 @@ def battle(attacker,defender):
 		# Double damage!
 		defender = danger_roll(defender)
 		defender = danger_roll(defender)
+		attacker['tel_overtakes'] = attacker['tel_overtakes'] + 1
 	elif def_roll > att_roll * 2:
 		# Double damage!
 		attacker = danger_roll(attacker)
 		attacker = danger_roll(attacker)
 		attacker['c_speed'] = 0
+		defender['tel_defends'] = defender['tel_defends'] + 1
+		attacker['tel_failed_overtakes'] = attacker['tel_failed_overtakes'] + 1
 	elif att_roll > def_roll * 1.5:
 		defender = danger_roll(defender)
+		attacker['tel_overtakes'] = attacker['tel_overtakes'] + 1
 	elif def_roll > att_roll * 1.5:
 		attacker = danger_roll(attacker)
 		attacker['c_speed'] = 0
+		defender['tel_defends'] = defender['tel_defends'] + 1
+		attacker['tel_failed_overtakes'] = attacker['tel_failed_overtakes'] + 1
 	elif defender > attacker:
 		attacker['c_speed'] = 0
-
+		defender['tel_defends'] = defender['tel_defends'] + 1
+		attacker['tel_failed_overtakes'] = attacker['tel_failed_overtakes'] + 1
 	return attacker,defender
 
 def move_car(car,track,mover,all_cars):
@@ -1185,7 +1210,9 @@ def qualify(these_cars,track):
 		c['tel_pit_time'] = []
 		c['tel_moves'] = []
 		c['tel_ebrakes'] = 0
-		c['tel_cutoff'] = 0
+		c['tel_failed_overtakes'] = 0
+		c['tel_overtakes'] = 0
+		c['tel_defends'] = 0
 		c['tel_steer'] = 0
 		c['tel_fuel_thr'] = 0
 		c['tel_dam_thr'] = 0
