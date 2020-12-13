@@ -1,0 +1,57 @@
+# Car Template
+
+############################################
+#  DO NOT EDIT THE BELOW SECTION MANUALLY  #
+#           EDIT USING GARAGE.PY           #
+############################################
+$:name:blackhawk
+$:team:hiland
+############################################
+#                TOUR INFO                 #
+############################################
+$:points:19
+############################################
+#                 CAR INFO                 #
+############################################
+$:cha:neutral
+$:rea:fusion
+$:fty:radium
+$:thr:12:90:106
+$:ste:7:90:100
+$:coo:13:90:99
+$:fin:12:90:105
+$:sen:15:90:99
+$:fcl:11:90:96
+$:afb:9:90:100
+$:dia:14:90:100
+############################################
+#               STRATEGY INFO              #
+############################################
+$:pp_fuel:15
+$:pp_dam:45
+$:tactic:team
+$:snack:porridge
+############################################
+#            LAST RACE TELEMETRY           #
+############################################
+# Data from last race on: 2020-08-14 08:47:30.553911
+%:Slowest Lap:14
+%:Average Lap:8.333333333333334
+%:Fastest Lap:5
+%:All Laps:[7, 9, 9, 10, 9, 6, 14, 10, 5, 6, 6, 10, 7, 12, 5]
+%:Pitstops Taken:8
+%:Slowest Pitstop:3
+%:Average Pitstop:2.25
+%:Fastest Pitstop:2
+%:All Pitstops:[2, 2, 2, 2, 3, 2, 2, 3]
+%:Total Moves:125
+%:Slowest Moves:43
+%:Average Moves:17.072
+%:Fastest Moves:0
+%:All Moves:[24, 4, 16, 25, 18, 26, 19, 15, 22, 31, 20, 7, 23, 8, 16, 19, 7, 0, 0, 15, 31, 34, 17, 19, 27, 0, 0, 20, 10, 10, 23, 17, 19, 18, 14, 12, 0, 0, 10, 20, 12, 35, 36, 9, 11, 23, 15, 43, 22, 34, 10, 6, 0, 0, 0, 0, 0, 0, 13, 28, 27, 13, 27, 15, 20, 0, 0, 20, 19, 14, 27, 10, 21, 21, 20, 22, 37, 31, 31, 31, 10, 31, 21, 37, 20, 17, 22, 17, 21, 16, 31, 18, 7, 0, 0, 12, 25, 17, 17, 39, 25, 14, 20, 20, 30, 7, 15, 23, 22, 0, 0, 0, 10, 7, 8, 17, 29, 13, 19, 42, 38, 24, 25, 16, 13]
+%:Moves cut short by turning:12
+%:Moves cut short another car:0
+%:Steering vs Thrusters:67/125
+%:Pitstops caused by fuel:0
+%:Pitstops caused by damage:8
+%:Total Part Degragation:335

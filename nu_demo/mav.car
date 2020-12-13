@@ -1,0 +1,57 @@
+# Car Template
+
+############################################
+#  DO NOT EDIT THE BELOW SECTION MANUALLY  #
+#           EDIT USING GARAGE.PY           #
+############################################
+$:name:mavrick
+$:team:western
+############################################
+#                TOUR INFO                 #
+############################################
+$:points:120
+############################################
+#                 CAR INFO                 #
+############################################
+$:cha:streamlined
+$:rea:fission
+$:fty:uranium
+$:thr:16:81:100
+$:ste:10:81:95
+$:coo:16:95:95
+$:fin:20:90:103
+$:sen:19:90:90
+$:fcl:16:90:96
+$:afb:7:7:101
+$:dia:16:90:95
+############################################
+#               STRATEGY INFO              #
+############################################
+$:pp_fuel:10
+$:pp_dam:90
+$:tactic:cautious
+$:snack:porridge
+############################################
+#            LAST RACE TELEMETRY           #
+############################################
+# Data from last race on: 2020-08-14 08:47:30.549917
+%:Slowest Lap:9
+%:Average Lap:6.066666666666666
+%:Fastest Lap:5
+%:All Laps:[5, 6, 5, 5, 8, 5, 6, 5, 5, 8, 9, 5, 8, 5, 6]
+%:Pitstops Taken:4
+%:Slowest Pitstop:3
+%:Average Pitstop:2.25
+%:Fastest Pitstop:2
+%:All Pitstops:[2, 2, 3, 2]
+%:Total Moves:91
+%:Slowest Moves:31
+%:Average Moves:23.417582417582416
+%:Fastest Moves:0
+%:All Moves:[27, 26, 28, 27, 29, 27, 18, 27, 27, 30, 29, 30, 27, 22, 24, 29, 30, 30, 24, 30, 26, 16, 0, 0, 21, 31, 24, 24, 29, 30, 27, 23, 27, 29, 30, 27, 26, 27, 27, 29, 18, 30, 24, 30, 29, 27, 30, 24, 21, 29, 22, 0, 0, 25, 26, 27, 27, 26, 12, 0, 0, 0, 18, 30, 27, 30, 29, 24, 30, 24, 24, 29, 21, 0, 0, 21, 30, 30, 30, 29, 23, 27, 27, 27, 29, 27, 27, 24, 21, 27, 5]
+%:Moves cut short by turning:7
+%:Moves cut short another car:0
+%:Steering vs Thrusters:50/91
+%:Pitstops caused by fuel:0
+%:Pitstops caused by damage:4
+%:Total Part Degragation:337
