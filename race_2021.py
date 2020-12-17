@@ -344,6 +344,7 @@ def save_car(car,degra_array):
 	c_fh.write("#           EDIT USING GARAGE.PY           #\n")
 	c_fh.write("############################################\n")
 	c_fh.write("$:name:"+str(car['name'])+"\n")
+	c_fh.write("$:team:"+str(car['team'])+"\n")
 	c_fh.write("############################################\n")
 	c_fh.write("#                TOUR INFO                 #\n")
 	c_fh.write("############################################\n")
@@ -909,8 +910,9 @@ def move_car(car,track,mover,all_cars):
 			car['lap'] = car['lap']+1
 			c_speed = c_speed - 5
 			# Add to car splits
-			car['tel_lap_splits'].append(car['tel_current_lap'])
-			car['tel_current_lap'] = 0
+			if car['lap'] > 0:
+				car['tel_lap_splits'].append(car['tel_current_lap'])
+				car['tel_current_lap'] = 0
 			# Stop checking if car finished
 			if car['lap'] >= track['lc']:
 				return car, all_cars
