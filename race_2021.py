@@ -56,7 +56,9 @@ def danger_roll(car):
 
 		if car['dmg'] > car['fra']:
 			car['wreck'] = True
-			car['degra'] = car['degra']+50
+			# Roll to see if the driver survived
+			if random.randint(0,99) == 99:
+				c['wreck-note'] = c['driver']+" did not survive."
 
 	return car
 
@@ -274,6 +276,10 @@ def car_telementry(car,vm):
 			telemetrics.append("%:Total Spins:"+str(car['tel_spin_count'])+"\n")
 		except:
 			telemetrics.append("%:Total Spins: NA\n")
+		try:
+			telemetrics.append("%:Cause of accident:"+str(car['wreck-note'])+"\n")
+		except:
+			telemetrics.append("%:Cause of accident: NA\n")
 		return telemetrics
 
 def car_status(car):
@@ -385,6 +391,11 @@ def save_car(car,degra_array):
 def degrade_car(c):
 	# Using a cars degragation, return degraded car
 
+	# First, check if the car was wrecked and apply modifiers
+	if c['wreck'] == True:
+		c['degra'] = c['degra'] + 50
+
+
 	c_fh = open(str(c['file']),"r")
 
 	# Gather the mins and maxes of all stats
@@ -424,7 +435,7 @@ def degrade_car(c):
 
 
 	# Determine total degragation
-	t_deg = round(c['degra']/15)
+	t_deg = round(c['degra']/10)
 
 	# Figure out total degragation
 	while t_deg > 0:
@@ -828,9 +839,9 @@ def move_car(car,track,mover,all_cars):
 			c_speed = car['ste']-random.randint(1,100)+car['coa']
 	else:
 		if mover == 0:
-			c_speed = (car['thr']*2)-random.randint(1,200)
+			c_speed = ((car['thr']*2)-random.randint(1,200))+(car['afb']-random.randint(20,80))
 		else:
-			c_speed = (car['ste']*2)-random.randint(1,200)
+			c_speed = ((car['ste']*2)-random.randint(1,200))+(car['afb']-random.randint(20,80))
 
 		if c_speed < car['coa']:
 			c_speed = car['coa']
