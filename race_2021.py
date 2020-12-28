@@ -12,7 +12,7 @@ from prettytable import PrettyTable
 
 def max_fuel():
 	# Returns the maximum fuel allowed 
-	return 50
+	return 100
 
 def title_splash():
 	cs()
@@ -56,9 +56,7 @@ def danger_roll(car):
 
 		if car['dmg'] > car['fra']:
 			car['wreck'] = True
-			# Roll to see if the driver survived
-			if random.randint(0,99) == 99:
-				c['wreck-note'] = c['driver']+" did not survive."
+
 
 	return car
 
@@ -865,9 +863,9 @@ def move_car(car,track,mover,all_cars):
 	elif car['fty'] == "uranium":
 		# Middle of the ground fuel
 		if car['coo'] < random.randint(1,100):
-			car['fuel'] = car['fuel'] - 3
+			car['fuel'] = car['fuel'] - 6
 		elif car['fcl'] < random.randint(1,100):
-			car['fuel'] = car['fuel'] - 1
+			car['fuel'] = car['fuel'] - 2
 		else:
 			car['fuel'] = car['fuel'] + 1
 
@@ -879,9 +877,9 @@ def move_car(car,track,mover,all_cars):
 		# Radium
 		# Safest fuel
 		if car['coo'] < random.randint(1,100):
-			car['fuel'] = car['fuel'] - 2
+			car['fuel'] = car['fuel'] - 4
 		elif car['fcl'] < random.randint(1,120):
-			car['fuel'] = car['fuel'] - 1
+			car['fuel'] = car['fuel'] - 2
 		else:
 			car['fuel'] = car['fuel'] + 1
 
@@ -891,7 +889,7 @@ def move_car(car,track,mover,all_cars):
 			c_speed = c_speed + ab_roll
 
 	# If you max out fuel, or go too fast, danger!
-	if car['fuel'] > 50 or c_speed >= 200:
+	if car['fuel'] > 100 or c_speed >= 200:
 		# If you ate the nachos, you may warp
 		if car['snack'] == "nachos" and random.randint(0,249) == 0:
 			# WARP
@@ -899,8 +897,11 @@ def move_car(car,track,mover,all_cars):
 			these_cars.remove(car)
 			warp.append(car)
 		car = danger_roll(car)
-		if car['wreck'] == 1:
+		if car['wreck'] == True:
 			car['wreck-note'] = "Destroyed in meltdown!"
+						# Roll to see if the driver survived
+			if random.randint(0,99) == 99:
+				car['wreck-note'] = car['wreck-note']+" "+car['driver']+" did not survive."
 			return car, all_cars
 
 	# If you run out of fuel your done!
@@ -983,6 +984,7 @@ def move_car(car,track,mover,all_cars):
 		# Check if you passed a car
 		else:
 			print("ERROR! " + track['course'][car['pos']])
+			print(car['pos'])
 			time.sleep(1)
 		
 		# Go through all cars
@@ -1002,8 +1004,14 @@ def move_car(car,track,mover,all_cars):
 					car,v = battle(car,v)
 					if v['wreck']:
 						v['wreck-note'] = "Wrecked in collision with "+car['name']
+						# Roll to see if the driver survived
+						if random.randint(0,99) == 99:
+							v['wreck-note'] = v['wreck-note']+" "+v['driver']+" did not survive."
 					if car['wreck']:
 						car['wreck-note'] = "Wrecked in collision with "+v['name']
+						# Roll to see if the driver survived
+						if random.randint(0,99) == 99:
+							car['wreck-note'] = car['wreck-note']+" "+car['driver']+" did not survive."				
 						return car, all_cars
 
 
@@ -1114,7 +1122,10 @@ def race(these_cars,track,info):
 
 					if v['wreck']:
 						v['wreck-note'] = "Wrecked in pileup"
-						c['degra'] = c['degra'] + c['dmg']
+						# Roll to see if the driver survived
+						if random.randint(0,99) == 99:
+							v['wreck-note'] = v['wreck-note']+" "+v['driver']+" did not survive."
+						v['degra'] = v['degra'] + v['dmg']
 						dnf.append(v)
 						these_cars.remove(v)
 			else:
