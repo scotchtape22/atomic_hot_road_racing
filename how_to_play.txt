@@ -1,0 +1,41 @@
+# atomic_hot_rod_hovercrafts
+Automatic Racing Game
+
+Instructions to play:
+Requires prettytable and tabulate with python 3.6+
+
+New cars can be built under a folder in tours (a tour races as a whole)
+Cars are currently edited as a text file saved as a .car - see tours/nu_demo for examples
+
+Car options include:
+$:name:Driver Name
+$:team:Team name
+$:cha:[cubic|streamlined|neutral]
+# Chassis, change durability and speed
+$:rea:[fission|fusion]
+# Reactor, fission reactors are more consistent, fusion reactors are slightly better but more unpredictable
+$:fty:[plutonium|uranium|radium]
+# Fuel type, from most to least volatile
+$:thr:1:101:110
+$:ste:1:101:110
+$:coo:1:101:110
+$:fin:1:101:109
+$:sen:1:101:110
+$:fcl:1:101:110
+$:afb:1:101:109
+$:dia:1:101:110
+# Car components - the 3 numbers are Minimum - Setting - Maximum, points not spent go to the cars durability, but must be between the outside numbers
+# Thrusters, Steering, Coolant, Fins, Sensors, Fuelcell, Afterburners, Diagnostics
+
+
+############################################
+#               STRATEGY INFO              #
+############################################
+$:pp_fuel:20
+# Minium amount of fuel the driver will leave in the tank, will pit if there is less than this, should be between 20-50
+$:pp_dam:90
+# Minium amount of fuel the driver will leave in the tank, will pit if there is less than this, should be between 20-200
+$:tactic:[cautious|psycho|solo|team]
+# Drivers approach to dealing with other drivers, cautious drivers will be hard to pass, psycho drivers will be good at passing, team drivers will avoid passing / blocking teammates
+$:snack:[porridge|cream|nachos]
+# A drivers pre-race snack will make them less erractic (porridge) or more erratic (entropy nachos)
