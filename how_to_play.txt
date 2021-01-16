@@ -3,6 +3,8 @@ Automatic Racing Game
 
 Instructions to play:
 Requires prettytable and tabulate with python 3.6+
+Within the folder:
+python3 race_2021.py
 
 New cars can be built under a folder in tours (a tour races as a whole)
 Cars are currently edited as a text file saved as a .car - see tours/nu_demo for examples
